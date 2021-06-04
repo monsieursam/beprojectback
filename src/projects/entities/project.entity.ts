@@ -21,6 +21,9 @@ export class Project extends BaseEntity {
   name: string;
 
   @Column()
+  body: string;
+
+  @Column()
   @CreateDateColumn()
   createdAt: Date;
 
