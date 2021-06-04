@@ -1,18 +1,27 @@
+
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './user.entity';
-import { UserService } from './user/user.service';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthService } from './auth/auth.service';
-import { AuthController } from './auth/auth.controller';
+import { PassportModule } from '@nestjs/passport';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+
+import { UsersModule } from '../users/users.module';
+import { JwtStrategy } from './jwt.strategy';
+import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([User]),
-    JwtModule.register({
-        secretOrPrivateKey: 'secret123456789'
-    })
-    ],
-    providers: [UserService, AuthService],
-    controllers: [AuthController]
+  imports: [
+    UsersModule,
+    PassportModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async () => ({
+        secret: 'plopi',
+      }),
+      inject: [ConfigService],
+    }),
+  ],
+  controllers: [AuthController],
+  providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}
