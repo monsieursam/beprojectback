@@ -21,12 +21,6 @@ export class Project extends BaseEntity {
   name: string;
 
   @Column()
-  body: string;
-
-  @Column()
-  image: string;
-
-  @Column()
   @CreateDateColumn()
   createdAt: Date;
 
