@@ -4,21 +4,21 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 
 import { Project } from './entities/project.entity';
-import { ProjectsRepository } from './projects.repository'
+import { ProjectsRepository } from './projects.repository';
 
 @Injectable()
 export class ProjectsService {
-    constructor(
-        @InjectRepository(ProjectsRepository)
-        private projectsRepository: ProjectsRepository,
-    ) {}
+  constructor(
+    @InjectRepository(ProjectsRepository)
+    private projectsRepository: ProjectsRepository,
+  ) {}
 
-    async create(createProjectDto: CreateProjectDto) {
-        const project = Project.create(Project);
-        await project.save();
+  async create(createProjectDto: CreateProjectDto) {
+    const project = Project.create(Project);
+    await project.save();
 
-        return project;
-      }
+    return project;
+  }
 
   async findAll() {
     return this.projectsRepository.findAll();
