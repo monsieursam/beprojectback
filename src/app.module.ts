@@ -1,22 +1,27 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
-
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
-import { ProjectsModule } from './projects/projects.module';
-import { AuthModule } from './auth/auth.module';
-
-import { User } from './users/entities/user.entity';
-
-const entities = [User];
+import { ArticleModule } from './article/article.module';
+import { UserModule } from './user/user.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Connection } from 'typeorm';
+import { ProfileModule } from './profile/profile.module';
+import { TagModule } from './tag/tag.module';
+import { ProjectModule } from './project/project.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({entities}),UsersModule, ProjectsModule, AuthModule, ConfigModule.forRoot({
-    isGlobal: true,
-  }),],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    TypeOrmModule.forRoot(),
+    ArticleModule,
+    ProjectModule,
+    UserModule,
+    ProfileModule,
+    TagModule
+  ],
+  controllers: [
+    AppController
+  ],
+  providers: []
 })
-export class AppModule {}
+export class ApplicationModule {
+  constructor(private readonly connection: Connection) {}
+}

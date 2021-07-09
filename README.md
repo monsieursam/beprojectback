@@ -1,73 +1,138 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# ![Node/Express/Mongoose Example App](project-logo.png)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+[![Build Status](https://travis-ci.org/anishkny/node-express-realworld-example-app.svg?branch=master)](https://travis-ci.org/anishkny/node-express-realworld-example-app)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+> ### NestJS codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld-example-apps) API spec.
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+----------
+
+# Getting started
 
 ## Installation
 
-```bash
-$ npm install
-```
+Clone the repository
 
-## Running the app
+    git clone https://github.com/lujakob/nestjs-realworld-example-app.git
 
-```bash
-# development
-$ npm run start
+Switch to the repo folder
 
-# watch mode
-$ npm run start:dev
+    cd nestjs-realworld-example-app
+    
+Install dependencies
+    
+    npm install
 
-# production mode
-$ npm run start:prod
-```
+Copy config file and set JsonWebToken secret key
 
-## Test
+    cp src/config.ts.example src/config.ts
+    
+----------
 
-```bash
-# unit tests
-$ npm run test
+## Database
 
-# e2e tests
-$ npm run test:e2e
+The codebase contains examples of two different database abstractions, namely [TypeORM](http://typeorm.io/) and [Prisma](https://www.prisma.io/). 
+    
+The branch `master` implements TypeORM with a mySQL database.
 
-# test coverage
-$ npm run test:cov
-```
+The branch `prisma` implements Prisma with a mySQL database.
 
-## Support
+----------
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+##### TypeORM
 
-## Stay in touch
+----------
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Create a new mysql database with the name `nestjsrealworld`\
+(or the name you specified in the ormconfig.json)
 
-## License
+Copy TypeORM config example file for database settings
 
-Nest is [MIT licensed](LICENSE).
+    cp ormconfig.json.example
+    
+Set mysql database settings in ormconfig.json
+
+    {
+      "type": "mysql",
+      "host": "localhost",
+      "port": 3306,
+      "username": "your-mysql-username",
+      "password": "your-mysql-password",
+      "database": "nestjsrealworld",
+      "entities": ["src/**/**.entity{.ts,.js}"],
+      "synchronize": true
+    }
+    
+Start local mysql server and create new database 'nestjsrealworld'
+
+On application start, tables for all entities will be created.
+
+----------
+
+##### Prisma
+
+----------
+
+To run the example with Prisma checkout branch `prisma`, remove the node_modules and run `npm install`
+
+Create a new mysql database with the name `nestjsrealworld-prisma` (or the name you specified in `prisma/.env`)
+
+Copy prisma config example file for database settings
+
+    cp prisma/.env.example prisma/.env
+
+Set mysql database settings in prisma/.env
+
+    DATABASE_URL="mysql://USER:PASSWORD@HOST:PORT/DATABASE"
+
+To create all tables in the new database make the database migration from the prisma schema defined in prisma/schema.prisma
+
+    npx prisma migrate save --experimental
+    npx prisma migrate up --experimental
+
+Now generate the prisma client from the migrated database with the following command
+
+    npx prisma generate
+
+The database tables are now set up and the prisma client is generated. For more information see the docs:
+
+- https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project-typescript-mysql
+
+
+----------
+
+## NPM scripts
+
+- `npm start` - Start application
+- `npm run start:watch` - Start application in watch mode
+- `npm run test` - run Jest test runner 
+- `npm run start:prod` - Build application
+
+----------
+
+## API Specification
+
+This application adheres to the api specifications set by the [Thinkster](https://github.com/gothinkster) team. This helps mix and match any backend with any other frontend without conflicts.
+
+> [Full API Spec](https://github.com/gothinkster/realworld/tree/master/api)
+
+More information regarding the project can be found here https://github.com/gothinkster/realworld
+
+----------
+
+## Start application
+
+- `npm start`
+- Test api with `http://localhost:3000/api/articles` in your favourite browser
+
+----------
+
+# Authentication
+ 
+This applications uses JSON Web Token (JWT) to handle authentication. The token is passed with each request using the `Authorization` header with `Token` scheme. The JWT authentication middleware handles the validation and authentication of the token. Please check the following sources to learn more about JWT.
+
+----------
+ 
+# Swagger API docs
+
+This example repo uses the NestJS swagger module for API documentation. [NestJS Swagger](https://github.com/nestjs/swagger) - [www.swagger.io](https://swagger.io/)        
