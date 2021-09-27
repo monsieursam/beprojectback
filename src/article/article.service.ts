@@ -170,6 +170,7 @@ export class ArticleService {
   async create(userId: number, articleData: CreateArticleDto): Promise<ArticleEntity> {
 
     let article = new ArticleEntity();
+    console.log(articleData)
     article.title = articleData.title;
     article.description = articleData.description;
     article.slug = this.slugify(articleData.title);

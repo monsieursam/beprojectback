@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { ApplicationModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { setupAdminPanel } from './admin-panel/admin-panel.plugin';
+
 
 async function bootstrap() {
   const appOptions = {cors: true};
@@ -16,6 +18,9 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/docs', app, document);
+
+  /** Setup Admin panel */
+  await setupAdminPanel(app);
 
   await app.listen(process.env.PORT || 3000);
 }

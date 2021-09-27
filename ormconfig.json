@@ -1,10 +1,10 @@
 {
   "type": "mysql",
-  "host": "freedb.tech",
-  "port": 3306,
-  "username": "freedbtech_sam",
-  "password": "azerazer",
-  "database": "freedbtech_beproject",
+  "host": "192.168.1.73",
+  "port": 8889,
+  "username": "test",
+  "password": "password",
+  "database": "beproject",
   "entities": ["src/**/**.entity{.ts,.js}"],
   "synchronize": true
 }
