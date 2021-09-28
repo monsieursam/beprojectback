@@ -10,7 +10,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   const options = new DocumentBuilder()
-    .setTitle('NestJS Realworld Example App')
+    .setTitle('Be project swagger')
     .setDescription('The Realworld API description')
     .setVersion('1.0')
     .setBasePath('api')
@@ -22,6 +22,7 @@ async function bootstrap() {
   /** Setup Admin panel */
   await setupAdminPanel(app);
 
+  console.log(process.env.PORT);
   await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
