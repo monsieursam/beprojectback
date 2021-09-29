@@ -69,11 +69,13 @@ export class ProjectService {
     const skippedItems = (paginationDto.page - 1) * paginationDto.limit;
 
     const totalCount = await this.projectRepository.count()
-    const products = await this.projectRepository.createQueryBuilder()
+    const products = await this.projectRepository.createQueryBuilder('project')
+      .leftJoinAndSelect('project.author', 'author')
       .orderBy('created', "DESC")
       .offset(skippedItems)
       .limit(paginationDto.limit)
       .getMany()
+
 
     return {
       totalCount,
