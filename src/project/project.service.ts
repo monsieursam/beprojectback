@@ -70,7 +70,7 @@ export class ProjectService {
 
     const totalCount = await this.projectRepository.count()
     const products = await this.projectRepository.createQueryBuilder()
-      .orderBy('createdAt', "DESC")
+      .orderBy('created', "DESC")
       .offset(skippedItems)
       .limit(paginationDto.limit)
       .getMany()

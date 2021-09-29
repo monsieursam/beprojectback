@@ -23,7 +23,7 @@ export class ProjectController {
 
   @ApiOperation({ summary: 'Get all projects' })
   @ApiResponse({ status: 200, description: 'Return all projects.'})
-  @Get()
+  @Get('/all')
   async findAll(@Query() query): Promise<ProjectsRO> {
     return await this.projectService.findAll(query);
   }
