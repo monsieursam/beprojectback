@@ -8,6 +8,8 @@ import { FollowsEntity } from '../profile/follows.entity';
 import { CreateProjectDto } from './dto';
 
 import {ProjectRO, ProjectsRO, CommentsRO} from './project.interface';
+import { PaginationDto } from './dto/pagination.dto';
+import { PaginatedProductsResultDto } from './dto/paginate-result.dto';
 const slug = require('slug');
 
 @Injectable()
@@ -61,6 +63,24 @@ export class ProjectService {
     const projects = await qb.getMany();
 
     return {projects, projectsCount};
+  }
+
+  async findAllPagination(paginationDto: PaginationDto): Promise<PaginatedProductsResultDto> {
+    const skippedItems = (paginationDto.page - 1) * paginationDto.limit;
+
+    const totalCount = await this.projectRepository.count()
+    const products = await this.projectRepository.createQueryBuilder()
+      .orderBy('createdAt', "DESC")
+      .offset(skippedItems)
+      .limit(paginationDto.limit)
+      .getMany()
+
+    return {
+      totalCount,
+      page: paginationDto.page,
+      limit: paginationDto.limit,
+      data: products,
+    }
   }
 
   async findFeed(userId: number, query): Promise<ProjectsRO> {

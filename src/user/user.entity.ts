@@ -1,5 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, BeforeInsert, JoinTable, ManyToMany, OneToMany, BaseEntity} from 'typeorm';
 import { IsEmail } from 'class-validator';
+import { Exclude } from 'class-transformer';
 import * as argon2 from 'argon2';
 import { ArticleEntity } from '../article/article.entity';
 import { ProjectEntity } from '../project/project.entity';
@@ -12,7 +13,7 @@ export class UserEntity extends BaseEntity {
   @Column()
   username: string;
 
-  @Column()
+  @Column({select: false})
   @IsEmail()
   email: string;
 
@@ -22,8 +23,11 @@ export class UserEntity extends BaseEntity {
   @Column({default: ''})
   image: string;
 
-  @Column()
+  @Column({select: false})
   password: string;
+
+  @Column('simple-array')
+  tagList: string[];
 
   @BeforeInsert()
   async hashPassword() {

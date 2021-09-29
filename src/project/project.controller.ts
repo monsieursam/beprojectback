@@ -11,6 +11,8 @@ import {
   ApiResponse,
   ApiOperation, ApiTags,
 } from '@nestjs/swagger';
+import { PaginationDto } from './dto/pagination.dto';
+import { PaginatedProductsResultDto } from './dto/paginate-result.dto';
 
 @ApiBearerAuth()
 @ApiTags('projects')
@@ -24,6 +26,17 @@ export class ProjectController {
   @Get()
   async findAll(@Query() query): Promise<ProjectsRO> {
     return await this.projectService.findAll(query);
+  }
+
+  @Get()
+  async findAllPaginate(@Query() paginationDto: PaginationDto): Promise<PaginatedProductsResultDto> {
+    paginationDto.page = Number(paginationDto.page)
+    paginationDto.limit = Number(paginationDto.limit)
+
+    return this.projectService.findAllPagination({
+      ...paginationDto,
+      limit: paginationDto.limit > 10 ? 10 : paginationDto.limit
+    })
   }
 
 
