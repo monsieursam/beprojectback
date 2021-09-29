@@ -26,7 +26,7 @@ export class UserEntity extends BaseEntity {
   @Column({select: false})
   password: string;
 
-  @Column('simple-array')
+  @Column('simple-array', {nullable: true})
   tagList: string[];
 
   @BeforeInsert()
