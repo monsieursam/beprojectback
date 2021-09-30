@@ -8,9 +8,10 @@ import { FollowsEntity } from '../profile/follows.entity';
 import { ProjectService } from './project.service';
 import { AuthMiddleware } from '../user/auth.middleware';
 import { UserModule } from '../user/user.module';
+import { TagEntity } from '../tag/tag.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ProjectEntity, CommentProject, UserEntity, FollowsEntity]), UserModule],
+  imports: [TypeOrmModule.forFeature([ProjectEntity, CommentProject, UserEntity, FollowsEntity, TagEntity]), UserModule],
   providers: [ProjectService],
   controllers: [
     ProjectController

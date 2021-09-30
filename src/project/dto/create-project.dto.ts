@@ -3,4 +3,6 @@ export class CreateProjectDto {
   readonly description: string;
   readonly body: string;
   readonly tagList: string[];
+  readonly tags: string[];
+
 }

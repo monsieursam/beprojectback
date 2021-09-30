@@ -10,6 +10,7 @@ import { CreateProjectDto } from './dto';
 import {ProjectRO, ProjectsRO, CommentsRO} from './project.interface';
 import { PaginationDto } from './dto/pagination.dto';
 import { PaginatedProductsResultDto } from './dto/paginate-result.dto';
+import { TagEntity } from '../tag/tag.entity';
 const slug = require('slug');
 
 @Injectable()
@@ -17,6 +18,8 @@ export class ProjectService {
   constructor(
     @InjectRepository(ProjectEntity)
     private readonly projectRepository: Repository<ProjectEntity>,
+    @InjectRepository(TagEntity)
+    private readonly tagRepository: Repository<TagEntity>,
     @InjectRepository(CommentProject)
     private readonly commentRepository: Repository<CommentProject>,
     @InjectRepository(UserEntity)
@@ -197,6 +200,31 @@ export class ProjectService {
     project.slug = this.slugify(projectData.title);
     project.tagList = projectData.tagList || [];
     project.comments = [];
+
+    projectData.tags.forEach(async tag => {
+      let tage = new TagEntity()
+
+      tage.tag = tag
+
+      const tagsFind = await this.tagRepository.find({ where: { tag: tag }
+      });
+
+      if(tagsFind.length === 0) {
+        tagsFind.push(tage)
+        await this.tagRepository.save(tagsFind);
+      }
+
+    })
+
+    const tagsSave:TagEntity[] = projectData.tags.map(tag => {
+      let tage = new TagEntity()
+
+      tage.tag = tag
+
+      return tage
+    })
+
+    project.tags = tagsSave || [];
 
     const newProject = await this.projectRepository.save(project);
 

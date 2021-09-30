@@ -36,7 +36,7 @@ export class ProjectEntity extends BaseEntity {
   tagList: string[];
 
   @ManyToMany(type => TagEntity, tag => tag.projects)
-  @JoinTable()
+  @JoinColumn()
   tags: TagEntity[];
 
   @ManyToOne(type => UserEntity, user => user.projects)
