@@ -4,6 +4,7 @@ import { Exclude } from 'class-transformer';
 import * as argon2 from 'argon2';
 import { ArticleEntity } from '../article/article.entity';
 import { ProjectEntity } from '../project/project.entity';
+import { TagEntity } from '../tag/tag.entity';
 
 @Entity('user')
 export class UserEntity extends BaseEntity {
@@ -33,6 +34,10 @@ export class UserEntity extends BaseEntity {
   async hashPassword() {
     this.password = await argon2.hash(this.password);
   }
+
+  @ManyToMany(type => TagEntity, tag => tag.user)
+  @JoinTable()
+  tags: TagEntity[];
 
   @ManyToMany(type => ArticleEntity)
   @JoinTable()
