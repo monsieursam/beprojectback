@@ -31,6 +31,7 @@ export class UserService {
     if (!user) {
       return null;
     }
+    console.log(user)
 
     if (await argon2.verify(user.password, password)) {
       return user;

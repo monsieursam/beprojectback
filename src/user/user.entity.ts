@@ -24,7 +24,7 @@ export class UserEntity extends BaseEntity {
   @Column({default: ''})
   image: string;
 
-  @Column({select: false})
+  @Column()
   password: string;
 
   @Column('simple-array', {nullable: true})
