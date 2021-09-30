@@ -10,12 +10,15 @@ import { validate } from 'class-validator';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { HttpStatus } from '@nestjs/common';
 import * as argon2 from 'argon2';
+import { TagEntity } from '../tag/tag.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>
+    private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(TagEntity)
+    private readonly tagRepository: Repository<TagEntity>
   ) {}
 
   async findAll(): Promise<UserEntity[]> {
@@ -59,6 +62,7 @@ export class UserService {
     newUser.password = password;
     newUser.articles = [];
     newUser.tags = [];
+    newUser.favorites = [];
 
     const errors = await validate(newUser);
     if (errors.length > 0) {
@@ -78,6 +82,22 @@ export class UserService {
     delete toUpdate.favorites;
 
     let updated = Object.assign(toUpdate, dto);
+
+    dto.tags?.forEach(async tag => {
+      let tage = new TagEntity()
+
+      tage.tag = tag
+
+      const tagsFind = await this.tagRepository.find({ where: { tag: tag }
+      });
+
+      if(tagsFind.length === 0) {
+        tagsFind.push(tage)
+        await this.tagRepository.save(tagsFind);
+      }
+
+    })
+
     return await this.userRepository.save(updated);
   }
 

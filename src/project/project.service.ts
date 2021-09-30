@@ -157,6 +157,7 @@ export class ProjectService {
     let project = await this.projectRepository.findOne({slug});
     const user = await this.userRepository.findOne(id);
 
+    console.log(user)
     const isNewFavorite = user.favorites.findIndex(_project => _project.id === project.id) < 0;
     if (isNewFavorite) {
       user.favorites.push(project);

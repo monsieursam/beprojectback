@@ -39,7 +39,7 @@ export class UserEntity extends BaseEntity {
   @JoinTable()
   tags: TagEntity[];
 
-  @ManyToMany(type => ArticleEntity)
+  @ManyToMany(type => ProjectEntity)
   @JoinTable()
   favorites: ProjectEntity[];
 
