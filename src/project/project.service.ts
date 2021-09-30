@@ -202,7 +202,7 @@ export class ProjectService {
     project.tagList = projectData.tagList || [];
     project.comments = [];
 
-    projectData.tags.forEach(async tag => {
+    projectData.tags?.forEach(async tag => {
       let tage = new TagEntity()
 
       tage.tag = tag
@@ -217,7 +217,7 @@ export class ProjectService {
 
     })
 
-    const tagsSave:TagEntity[] = projectData.tags.map(tag => {
+    const tagsSave:TagEntity[] = projectData.tags?.map(tag => {
       let tage = new TagEntity()
 
       tage.tag = tag
@@ -242,6 +242,22 @@ export class ProjectService {
     let toUpdate = await this.projectRepository.findOne({ slug: slug});
     let updated = Object.assign(toUpdate, projectData);
     const project = await this.projectRepository.save(updated);
+
+    projectData.tags.forEach(async tag => {
+      let tage = new TagEntity()
+
+      tage.tag = tag
+
+      const tagsFind = await this.tagRepository.find({ where: { tag: tag }
+      });
+
+      if(tagsFind.length === 0) {
+        tagsFind.push(tage)
+        await this.tagRepository.save(tagsFind);
+      }
+
+    })
+
     return {project};
   }
 

@@ -4,6 +4,7 @@ import { Repository, getRepository, DeleteResult } from 'typeorm';
 import { UserEntity } from './user.entity';
 import {CreateUserDto, LoginUserDto, UpdateUserDto} from './dto';
 const jwt = require('jsonwebtoken');
+    var faker = require('faker');
 import { SECRET } from '../config';
 import { UserRO } from './user.interface';
 import { validate } from 'class-validator';
@@ -59,6 +60,8 @@ export class UserService {
     let newUser = new UserEntity();
     newUser.username = username;
     newUser.email = email;
+    const randomEmail = faker.image.imageUrl();
+    newUser.image = randomEmail
     newUser.password = password;
     newUser.articles = [];
     newUser.tags = [];

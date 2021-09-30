@@ -40,6 +40,7 @@
     "crypto": "^1.0.1",
     "crypto-js": "^4.0.0",
     "express-formidable": "^1.2.0",
+    "faker": "^5.5.3",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
     "passport-jwt": "^4.0.0",
