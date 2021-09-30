@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne, OneToMany, JoinColumn, AfterUpdate, BeforeUpdate, BaseEntity } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne, OneToMany, JoinColumn, AfterUpdate, BeforeUpdate, BaseEntity, ManyToMany, JoinTable } from 'typeorm';
+import { TagEntity } from '../tag/tag.entity';
 import { UserEntity } from '../user/user.entity';
 import { CommentProject } from './commentproject.entity';
 
@@ -33,6 +34,10 @@ export class ProjectEntity extends BaseEntity {
 
   @Column('simple-array')
   tagList: string[];
+
+  @ManyToMany(type => TagEntity, tag => tag.projects)
+  @JoinTable()
+  tags: TagEntity[];
 
   @ManyToOne(type => UserEntity, user => user.projects)
   author: UserEntity;
